@@ -1,0 +1,50 @@
+---
+apiVersion: kuberhealthy.github.io/v2
+kind: HealthCheck
+metadata:
+  name: ssl-expiry
+  namespace: kuberhealthy
+spec:
+  runInterval: 24h
+  timeout: 15m
+  podSpec:
+    spec:
+      containers:
+        - name: ssl-expiry
+          image: kuberhealthy/ssl-expiry-check:sha-<short-sha>
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DOMAIN_NAME
+              value: "example.com"
+            - name: PORT
+              value: "443"
+            - name: DAYS
+              value: "60"
+            - name: INSECURE
+              value: "false"
+      restartPolicy: Never
+---
+apiVersion: kuberhealthy.github.io/v2
+kind: HealthCheck
+metadata:
+  name: ssl-expiry-selfsigned
+  namespace: kuberhealthy
+spec:
+  runInterval: 24h
+  timeout: 15m
+  podSpec:
+    spec:
+      containers:
+        - name: ssl-expiry-selfsigned
+          image: kuberhealthy/ssl-expiry-check:sha-<short-sha>
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DOMAIN_NAME
+              value: "kubernetes.default"
+            - name: PORT
+              value: "443"
+            - name: DAYS
+              value: "60"
+            - name: INSECURE
+              value: "true"
+      restartPolicy: Never
