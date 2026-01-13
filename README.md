@@ -1,49 +1,23 @@
-# ssl-expiry-check
+# Ssl Expiry Check
 
-The `ssl-expiry-check` verifies a TLS certificate is valid and does not expire within a configured number of days.
+Kuberhealthy's SSL expiry check
 
-## Configuration
+## What it is
+This repository builds the container image used by Kuberhealthy to run the ssl-expiry-check check.
 
-Set these environment variables in the `HealthCheck` spec:
+## Image
+- `docker.io/kuberhealthy/ssl-expiry-check`
+- Tags: short git SHA for `main` pushes and `vX.Y.Z` for releases.
 
-- `DOMAIN_NAME` (required): domain name to check.
-- `PORT` (required): TLS port to check (for example, `443`).
-- `DAYS` (required): number of days before expiration to warn (for example, `60`).
-- `INSECURE` (required): set to `true` for self-signed certificates to skip TLS verification.
+## Quick start
+- Apply the example manifest: `kubectl apply -f healthcheck.yaml`
+- Edit the manifest to set any required inputs for your environment.
 
-## Build
+## Build locally
+- `docker build -f ./Containerfile -t kuberhealthy/ssl-expiry-check:dev .`
 
-- `just build` builds the container image locally.
-- `just test` runs unit tests.
-- `just binary` builds the binary in `bin/`.
+## Contributing
+Issues and PRs are welcome. Please keep changes focused and add a short README update when behavior changes.
 
-## Example HealthCheck
-
-Apply the example below or the provided `healthcheck.yaml`:
-
-```yaml
-apiVersion: kuberhealthy.github.io/v2
-kind: HealthCheck
-metadata:
-  name: ssl-expiry
-  namespace: kuberhealthy
-spec:
-  runInterval: 24h
-  timeout: 15m
-  podSpec:
-    spec:
-      containers:
-        - name: ssl-expiry
-          image: kuberhealthy/ssl-expiry-check:sha-<short-sha>
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: DOMAIN_NAME
-              value: "example.com"
-            - name: PORT
-              value: "443"
-            - name: DAYS
-              value: "60"
-            - name: INSECURE
-              value: "false"
-      restartPolicy: Never
-```
+## License
+See `LICENSE`.
