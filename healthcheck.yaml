@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: ssl-expiry
-          image: ghcr.io/kuberhealthy/ssl-expiry-check:v0.1.0
+          image: docker.io/kuberhealthy/ssl-expiry-check:v0.1.1
           imagePullPolicy: IfNotPresent
           env:
             - name: DOMAIN_NAME
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
         - name: ssl-expiry-selfsigned
-          image: ghcr.io/kuberhealthy/ssl-expiry-check:v0.1.0
+          image: docker.io/kuberhealthy/ssl-expiry-check:v0.1.1
           imagePullPolicy: IfNotPresent
           env:
             - name: DOMAIN_NAME
